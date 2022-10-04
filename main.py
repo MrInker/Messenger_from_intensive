@@ -38,7 +38,11 @@ def send_message():
 # Главная страница
 @app.route("/")
 def hello_page():
-    return "New text goes here"
+    return "<br><br><center><h1><a href=\"/chat\">Chat</a><br><a href=\"/info\">INFO</a> </h1></center>"
 
+@app.route("/info")
+def info_page():
+    info = len(all_messages)
+    return f"<br><br><center><h1> Количество сообщений: {info} </h1></center>"
 
 app.run()

@@ -52,7 +52,7 @@ def hello_page():
 @app.route("/info")
 def info_page():
     info = len(all_messages)
-    return f"<br><br><center><h1> Количество сообщений: {info} </h1></center>"
+    return f"<br><br><center><h1> Количество сообщений: {info} <br> <a href=\"/chat\">Chat</a> </h1></center>"
 
 
 app.run()

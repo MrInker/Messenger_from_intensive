@@ -4,13 +4,13 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
 
-    <title>Skill Py Chat</title>
+    <title>Skull Py Chat</title>
 
     <link rel="icon" type="image/png" href="favicon.png"/>
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css"/>
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>     <!--  скрипт который подгружается в клиент, для обработки пайтона -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-      <!--  красивый вид элементов -->
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <py-config>
       paths = [
@@ -26,7 +26,7 @@
     <div class="input-group my-3 mr-3">
         <span class="input-group-text">Welcome to Skillbox Chat!</span>
 
-            <select class="form-select" name="emoji" id="emoji_selector">
+            <select class="form-select" id="emoji_selector">
                 <option value="🤠">🤠</option>
                 <option value="🥺">🥺</option>
                 <option value="😍">😍</option>
@@ -42,7 +42,7 @@
         </div>
     </div>
     <div class="input-group mb-3">
-        <input on id="message_text" name="text" type="text" class="form-control" placeholder="Текст сообщения">
+        <input id="message_text" name="text" type="text" class="form-control" placeholder="Текст сообщения">
         <a id="send_message" class="btn btn-primary">
             <i class="bi bi-send-fill"></i> Отправить
         </a>
@@ -51,8 +51,6 @@
 
 
     </ul>
-<br><br><center><h1><a href=/info>INFO</a> </h1></center>
 </div>
-
 </body>
 </html>

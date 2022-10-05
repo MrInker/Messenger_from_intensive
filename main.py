@@ -1,10 +1,27 @@
 from flask import Flask, request, render_template
 from datetime import datetime
+import json
 
 app = Flask(__name__, static_folder="./client", template_folder="./client")  # Настройки приложения
 
-msg_ID = 1
-all_messages = []
+msg_id = 1
+
+DB_FILE = "db.json"
+
+
+def load_messages():
+    with open(DB_FILE, "r") as json_file:
+        data = json.load(json_file)
+        return data["messages"]
+
+
+all_messages = load_messages()
+
+
+def save_messages():
+    with open(DB_FILE, "w") as json_file:
+        data = {"messages": all_messages}
+        json.dump(data, json_file)
 
 
 @app.route("/chat")
@@ -13,52 +30,46 @@ def chat_page():
 
 
 def add_message(sender, text):
-    global msg_ID
+    global msg_id
     new_message = {
         "sender": sender,
         "text": text,
         "time": datetime.now().strftime("%H:%M"),
-        "msg_ID": msg_ID
+        "msg_id": msg_id
     }
-    msg_ID += 1
+    msg_id += 1
     all_messages.append(new_message)
+    save_messages()  # Сохраняем каждое сообщение
+    # if msg_id % 10 == 0:
+    #     save_messages()   # Сохраняем все сообщения регулярно: раз в 10 сообщений
+
+    # ToDo: сохранять сообщения каждые 5 секунд, asyncio
+    # ToDo: сохранять сообщения без перезаписи файла, а дописывая в конец построчно open(file, "a")
 
 
-# API для получения списка сообщений
-# будем просить сервер дать только новые сообщения /get_messages?after=0 /get_messages?after=5
+    # API для получения списка сообщений
+# Только новые сообщения: /get_messages?after=5
 @app.route("/get_messages")
 def get_messages():
-    after = int(request.args['after'])
-    return {"messages": all_messages[after:]}  # Делаем СЛАЙС - отрезать кусочек. Взять всё после сообщения after
+    after = int(request.args["after"])
+    return {"messages": all_messages[after:]}
 
 
+# HTTP-GET
 # API для получения отправки сообщения  /send_message?sender=Mike&text=Hello
 @app.route("/send_message")
 def send_message():
     sender = request.args["sender"]
     text = request.args["text"]
-
-    if len(sender) < 3 or len(sender) > 100:
-        add_message('<font color="red">SYSTEM</font>', 'Invalid Name')
-        return {"result": False, "Error": "Invalid Name"}
-    elif len(text) < 1 or len(text) > 3000:
-        add_message('<font color="red">SYSTEM</font>', 'Invalid Message')
-        return {"result": False, "Error": "Invalid Message"}
-    else:
-        add_message(sender, text)
-        return {"result": True}
+    add_message(sender, text)
+    return {"result": True}
 
 
 # Главная страница
 @app.route("/")
 def hello_page():
-    return "<br><br><center><h1><a href=\"/chat\">Chat</a><br><a href=\"/info\">INFO</a> </h1></center>"
+    return "New text goes here"
 
 
-@app.route("/info")
-def info_page():
-    info = len(all_messages)
-    return f"<br><br><center><h1> Количество сообщений: {info} <br> <a href=\"/chat\">Chat</a> </h1></center>"
-
-# app.run() по умолчанию - запускается локально на порту 5000 (127,0,0,1)
-app.run() # 80 стандартный порт для ХТТП, что бы не вводить порт
+# app.run() - локально на порту 5000
+app.run(host="0.0.0.0", port=80)

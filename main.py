@@ -31,8 +31,16 @@ def get_messages():
 def send_message():
     sender = request.args["sender"]
     text = request.args["text"]
-    add_message(sender, text)
-    return {"result": True}
+
+    if len(sender) < 3 or len(sender) > 100:
+        add_message('<font color="red">SYSTEM</font>', 'Invalid Name')
+        return {"result": False, "Error": "Invalid Name"}
+    elif len(text) < 1 or len(text) > 3000:
+        add_message('<font color="red">SYSTEM</font>', 'Invalid Message')
+        return {"result": False, "Error": "Invalid Message"}
+    else:
+        add_message(sender, text)
+        return {"result": True}
 
 
 # Главная страница
@@ -40,9 +48,11 @@ def send_message():
 def hello_page():
     return "<br><br><center><h1><a href=\"/chat\">Chat</a><br><a href=\"/info\">INFO</a> </h1></center>"
 
+
 @app.route("/info")
 def info_page():
     info = len(all_messages)
     return f"<br><br><center><h1> Количество сообщений: {info} </h1></center>"
+
 
 app.run()
